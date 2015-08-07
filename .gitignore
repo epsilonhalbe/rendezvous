@@ -1,0 +1,9 @@
+cabal.sandbox.config
+*.txt
+*.json
+log/
+dist/
+.cabal-sandbox
+
+!rendezvous.cabal
+!.gitignore
