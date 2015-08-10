@@ -36,44 +36,52 @@ import           Application
 routes :: [(ByteString, Handler App App ())]
 routes = [("/",         testHandler)
          ,("/login",    loginHandler)
-         ,("",          serveDirectory "static")
+         ,("/static",   serveDirectory "static")
          ]
 
 testHandler :: Handler App App ()
 testHandler = blaze $ H.docTypeHtml $
-    do H.head $ H.title "SnaptestBlaze"
+    do H.head $ do H.title "SnaptestBlaze"
+                   H.link H.! A.rel "stylesheet"
+                          H.! A.type_ "text/css"
+                          H.! A.href "/static/style.css"
+
        H.body $ do H.p "Blaze makes Html"
-                   H.ul $ forM_ [1..21::Int] (H.li . H.toHtml)
+                   H.ul $ forM_ [1..10::Int] (H.li . H.toHtml)
 
 loginHandler :: Handler App App ()
 loginHandler = blaze $ H.docTypeHtml $
-    do H.head $ H.title "Rdv"
+--------------------------------------------------------------------------------
+    do H.head $ do H.title "Rdv"
+                   H.link H.! A.rel "stylesheet"
+                          H.! A.type_ "text/css"
+                          H.! A.href "/static/style.css"
+--------------------------------------------------------------------------------
        H.body $ do
+         H.h1 "«Rendezvous»"
          H.div H.! A.id "loginbox" $ do
-           H.h2 "Login"
+           H.h2 "Please login"
            H.form H.! A.method "POST"
+                  H.! A.id "login"
                   H.! A.action "login" $ do
-             H.label H.! A.for "login" $ "Username: "
              H.input H.! A.type_ "text"
-                     H.! A.name "login"
-                     H.! A.id "login"
-                     H.! A.value ""
+                     H.! A.name "username"
+                     H.! A.id "username"
                      H.! A.placeholder "username"
              H.hr
-             H.label H.! A.for "password" $ "Password: "
              H.input H.! A.type_ "text"
                      H.! A.name "password"
                      H.! A.id "password"
-                     H.! A.value ""
                      H.! A.placeholder "password"
              H.br
-             H.label H.! A.for "login" $ "Remember me: "
+             H.label H.! A.for "username" $ "Remember me: "
              H.input H.! A.type_ "checkbox"
                      H.! A.name "remember"
                      H.! A.id   "remember"
                      H.! A.value ""
-             H.input H.! A.type_ "submit"
-                     H.! A.value "Login"
+             H.a "Login" H.! A.onclick "document.getElementById('login').submit()"
+                         H.! A.href "#"
+
 
 
 ------------------------------------------------------------------------------
