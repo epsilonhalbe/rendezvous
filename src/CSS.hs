@@ -19,7 +19,7 @@ myStylesheet = do body ?
                           fontSize (pt 20)
 
                   (input # ("id" @= "username")) ? inputStyling
-                  (input # ("id" @= "password")) ? inputStyling
+                  (input # ("id" $= "password")) ? inputStyling
 
                   (div # byClass "loginbox") ?
                     do background mediumaquamarine
@@ -68,5 +68,5 @@ centered = do width $ pct 100
 inputStyling :: Css
 inputStyling = do display block
                   sym2 margin (px 0) auto
-                  {-background $ parse "#222222"-}
-                  {-color white-}
+                  background $ parse "#222222"
+                  color white

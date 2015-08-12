@@ -9,19 +9,22 @@ module Site
   ) where
 
 ------------------------------------------------------------------------------
-import           Control.Applicative()
-import           Control.Monad (forM_)
+import           Control.Applicative((<|>))
+import           Control.Monad (forM_, when)
 import           Data.ByteString (ByteString)
 import           Data.Text()
-import           Snap.Core()
+import           Snap
+import           Snap.Core
 import           Snap.Blaze (blaze)
 import           Snap.Snaplet
 import           Snap.Snaplet.Auth
 import           Snap.Snaplet.Auth.Backends.JsonFile
-import           Snap.Snaplet.Heist (heistInit)
+import           Snap.Snaplet.Heist (heistInit, heistServe)
+import           Snap.Snaplet.Session
 import           Snap.Snaplet.Session.Backends.CookieSession
 import           Snap.Util.FileServe
-import           Heist()
+--import           Heist()
+
 {-import qualified Heist.Interpreted as I-}
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
@@ -34,23 +37,14 @@ import           Application
 ------------------------------------------------------------------------------
 -- | The application's routes.
 routes :: [(ByteString, Handler App App ())]
-routes = [("/",         testHandler)
-         ,("/login",    loginHandler)
+routes = [("/",         rootHandler)
+         ,("/login",    with auth $ loginHandler)
+         ,("/register", with auth $ registerHandler)
          ,("/static",   serveDirectory "static")
          ]
 
-testHandler :: Handler App App ()
-testHandler = blaze $ H.docTypeHtml $
-    do H.head $ do H.title "SnaptestBlaze"
-                   H.link H.! A.rel "stylesheet"
-                          H.! A.type_ "text/css"
-                          H.! A.href "/static/style.css"
-
-       H.body $ do H.p "Blaze makes Html"
-                   H.ul $ forM_ [1..10::Int] (H.li . H.toHtml)
-
-loginHandler :: Handler App App ()
-loginHandler = blaze $ H.docTypeHtml $
+rootHandler :: AppHandler ()
+rootHandler = blaze $ H.docTypeHtml $
 --------------------------------------------------------------------------------
     do H.head $ do H.title "Rdv"
                    H.link H.! A.rel "stylesheet"
@@ -63,7 +57,7 @@ loginHandler = blaze $ H.docTypeHtml $
            H.h2 "Login"
            H.form H.! A.method "POST"
                   H.! A.id     "login"
-                  H.! A.action "login" $ do
+                  H.! A.action "/login" $ do
              H.p $ input' "username" "text"
              H.p $ input' "password" "password"
              H.label H.! A.for "username" $ "Remember me: "
@@ -71,10 +65,21 @@ loginHandler = blaze $ H.docTypeHtml $
 
              H.a square H.! A.onclick "document.getElementById('login').submit()"
                         H.! A.href "#"
-         H.div H.! A.class_ "loginbox" $ H.h2 $
-             H.a "Register" H.! A.onclick "alert('mister register!')"
-                            H.! A.href "#"
+         {-H.div H.! A.class_ "loginbox" $ H.h2 $-}
+             {-H.a "Register" -- H.! A.onclick "alert('mister register!')"-}
+                            {-H.! A.href "/register"-}
 
+         H.div H.! A.class_"loginbox" $ do
+           H.h2 "Register"
+           H.form H.! A.method "POST"
+                  H.! A.id     "register"
+                  H.! A.action "/register" $ do
+             H.p $ input' "username" "text"
+             H.p $ input' "password"  "password"
+             H.p $ input' "cpassword" "retype password"
+
+             H.a square H.! A.onclick "document.getElementById('register').submit()"
+                        H.! A.href "#"
 
   where
     input' str t = H.input H.! A.type_ t
@@ -88,8 +93,16 @@ loginHandler = blaze $ H.docTypeHtml $
                             H.! A.value ""
     square = H.div H.! A.class_ "btn" $ H.text ""
 
+registerHandler = do
+    pw  <- getParam "password"
+    cpw <- getParam "cpassword"
+    if (pw == cpw)
+      then do authUser <- registerUser "username" "password"
+              blaze $ H.docTypeHtml $ H.string $ show authUser
+      else blaze $ H.docTypeHtml $ H.text "passwords do not match"
 
-
+loginHandler = do loginUser <- registerUser "username" "password"
+                  blaze $ H.docTypeHtml $ H.string $ show loginUser
 
 ------------------------------------------------------------------------------
 -- | The application initializer.
