@@ -2,6 +2,7 @@
 
 import Prelude hiding (div)
 import Clay
+import Clay.Color
 import Control.Arrow (first)
 import Data.Text.Lazy.IO as T
 
@@ -10,43 +11,62 @@ main = T.writeFile "./static/style.css" $ render myStylesheet
 
 myStylesheet :: Css
 myStylesheet = do body ?
-                    do background $ colorstring "#221132"
-                       color white
-                  h1 ? do fontFamily ["Archistico"] [sansSerif]
-                          textAlign $ alignSide sideCenter
+                    do background $ parse "#222222"
 
-                  (div # byId "loginbox") ?
-                    do background red
+                  h1 ? do fontFamily ["Archistico"] [sansSerif]
+                          color mediumaquamarine
+                          textAlign $ alignSide sideCenter
+                          fontSize (pt 20)
+
+                  (input # ("id" @= "username")) ? inputStyling
+                  (input # ("id" @= "password")) ? inputStyling
+
+                  (div # byClass "loginbox") ?
+                    do background mediumaquamarine
                        color black
                        centered
-                       padding (px 0) (px 10) (px 10) (px 10)
+                       position relative
                        width  $ px 250
+                       padding (px 0) (px 10) (px 10) (px 10)
                        borderRadius (px 5) (px 5) (px 5) (px 5)
-                  (div # byId "loginbox") |> h2 ?
-                       do fontFamily ["Quicksand"] [sansSerif]
-                          textAlign $ alignSide sideCenter
-                  (div # byId "loginbox") |> a ?
-                       do -- transform (rotateX $ deg 45)
-                          background blue
-                          color white
+                       boxShadows [(px x, px y, px 4, white)| x<-[-1,1], y<-[-1,1]]
+
+
+                  (div # byClass "loginbox") |> h2 ? do
+                      fontFamily ["Archistico"] [sansSerif]
+                      fontWeight bold
+                      textShadow (px 1) (px 0) (px 1) black
+                      textShadow (px (-1)) (px 0) (px 1) black
+                      (textAlign $ alignSide sideCenter)
+
+                  (div # byClass "btn") ?
+                      do width $ px 50
+                         height $ px 50
+                         background khaki
+                         transform (rotate $ deg 45)
+                         position absolute
+                         right $ px (-25)
+                         top  $ px 52
+                         boxShadows [(px   0 , px   1 , px 2, black)
+                                    ,(px (-1), px   0 , px 2, black)
+                                    ,(px   0 , px (-1), px 4, white)
+                                    ,(px   1 , px   0 , px 4, white)]
+                  (div # byClass "btn") # hover  ? background yellow
+                  (div # byClass "btn") # active ? background white
+
                   fontFace $ do fontFamily ["Archistico"] []
                                 fontFaceSrc [FontFaceSrcUrl "/static/Archistico/Archistico_Bold.ttf" (Just TrueType)]
                                 fontWeight bold
                   fontFace $ do fontFamily ["Quicksand"] []
                                 fontFaceSrc [FontFaceSrcUrl "../static/Quicksand/Quicksand-Bold.otf" (Just OpenType)]
                                 fontWeight bold
-centered :: Clay.Css
+centered :: Css
 centered = do width $ pct 100
               boxSizing borderBox
               sym2 margin (px 0) auto
 
-
-
-
-colorstring :: String -> Color
-colorstring ('#':str) = let (r',ggbb) = first readInt $ splitAt 2 str
-                            (g',bb)   = first readInt $ splitAt 2 ggbb
-                            (b',_)    = first readInt $ splitAt 2 bb
-                            readInt int = read ("0x"++int) :: Integer
-                        in rgb r' g' b'
-colorstring _ = error "malformed colorstring"
+inputStyling :: Css
+inputStyling = do display block
+                  sym2 margin (px 0) auto
+                  {-background $ parse "#222222"-}
+                  {-color white-}

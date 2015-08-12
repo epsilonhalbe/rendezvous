@@ -59,28 +59,35 @@ loginHandler = blaze $ H.docTypeHtml $
 --------------------------------------------------------------------------------
        H.body $ do
          H.h1 "«Rendezvous»"
-         H.div H.! A.id "loginbox" $ do
-           H.h2 "Please login"
+         H.div H.! A.class_"loginbox" $ do
+           H.h2 "Login"
            H.form H.! A.method "POST"
-                  H.! A.id "login"
+                  H.! A.id     "login"
                   H.! A.action "login" $ do
-             H.input H.! A.type_ "text"
-                     H.! A.name "username"
-                     H.! A.id "username"
-                     H.! A.placeholder "username"
-             H.hr
-             H.input H.! A.type_ "text"
-                     H.! A.name "password"
-                     H.! A.id "password"
-                     H.! A.placeholder "password"
-             H.br
+             H.p $ input' "username" "text"
+             H.p $ input' "password" "password"
              H.label H.! A.for "username" $ "Remember me: "
-             H.input H.! A.type_ "checkbox"
-                     H.! A.name "remember"
-                     H.! A.id   "remember"
-                     H.! A.value ""
-             H.a "Login" H.! A.onclick "document.getElementById('login').submit()"
-                         H.! A.href "#"
+             checkbox' "remember"
+
+             H.a square H.! A.onclick "document.getElementById('login').submit()"
+                        H.! A.href "#"
+         H.div H.! A.class_ "loginbox" $ H.h2 $
+             H.a "Register" H.! A.onclick "alert('mister register!')"
+                            H.! A.href "#"
+
+
+  where
+    input' str t = H.input H.! A.type_ t
+                         H.! A.name  str
+                         H.! A.id str
+                         H.! A.placeholder str
+
+    checkbox' str = H.input H.! A.type_ "checkbox"
+                            H.! A.name str
+                            H.! A.id   str
+                            H.! A.value ""
+    square = H.div H.! A.class_ "btn" $ H.text ""
+
 
 
 
