@@ -15,3 +15,16 @@ data for their need.
 - inviting of users
 - sending email notifiers/reminders
 - more stuff when i think of it
+
+## TODO-list
+
+| status | task                                                  |
+|:------:|-------------------------------------------------------|
+| DONE   | login page                                            |
+| -      | make auth work                                        |
+| -      | change file based auth to sqlite/persistent/esquelito |
+| -      | provide datatypes for rdv/user                        |
+| -      | render mechanism for rdv                              |
+| -      | routes for logged in page                             |
+| -      | calendar-view                                         |
+| -      | participants-view                                     |
