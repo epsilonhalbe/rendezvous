@@ -27,5 +27,6 @@ instance HasHeist App where
 
 ------------------------------------------------------------------------------
 type AppHandler = Handler App App
+type AuthHandler = Handler App (AuthManager App)
 
 

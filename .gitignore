@@ -1,6 +1,7 @@
 cabal.sandbox.config
 *.txt
 *.json
+*.sym
 log/
 dist/
 static/

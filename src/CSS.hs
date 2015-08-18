@@ -2,19 +2,17 @@
 
 import Prelude hiding (div)
 import Clay
-import Clay.Color
-import Control.Arrow (first)
 import Data.Text.Lazy.IO as T
 
 main :: IO ()
-main = T.writeFile "./static/style.css" $ render myStylesheet
+main = T.writeFile "./static/css/style.css" $ render myStylesheet
 
 myStylesheet :: Css
 myStylesheet = do body ?
-                    do background $ parse "#222222"
+                    do background $ black'
 
                   h1 ? do fontFamily ["Archistico"] [sansSerif]
-                          color mediumaquamarine
+                          color steelblue
                           textAlign $ alignSide sideCenter
                           fontSize (pt 20)
 
@@ -22,8 +20,8 @@ myStylesheet = do body ?
                   (input # ("id" $= "password")) ? inputStyling
 
                   (div # byClass "loginbox") ?
-                    do background mediumaquamarine
-                       color black
+                    do background steelblue
+                       color $ black'
                        centered
                        position relative
                        width  $ px 250
@@ -35,8 +33,8 @@ myStylesheet = do body ?
                   (div # byClass "loginbox") |> h2 ? do
                       fontFamily ["Archistico"] [sansSerif]
                       fontWeight bold
-                      textShadow (px 1) (px 0) (px 1) black
-                      textShadow (px (-1)) (px 0) (px 1) black
+                      textShadow (px 1) (px 0) (px 1) black'
+                      textShadow (px (-1)) (px 0) (px 1) black'
                       (textAlign $ alignSide sideCenter)
 
                   (div # byClass "btn") ?
@@ -47,18 +45,18 @@ myStylesheet = do body ?
                          position absolute
                          right $ px (-25)
                          top  $ px 52
-                         boxShadows [(px   0 , px   1 , px 2, black)
-                                    ,(px (-1), px   0 , px 2, black)
+                         boxShadows [(px   0 , px   1 , px 2, black')
+                                    ,(px (-1), px   0 , px 2, black')
                                     ,(px   0 , px (-1), px 4, white)
                                     ,(px   1 , px   0 , px 4, white)]
                   (div # byClass "btn") # hover  ? background yellow
                   (div # byClass "btn") # active ? background white
 
                   fontFace $ do fontFamily ["Archistico"] []
-                                fontFaceSrc [FontFaceSrcUrl "/static/Archistico/Archistico_Bold.ttf" (Just TrueType)]
+                                fontFaceSrc [FontFaceSrcUrl "/static/fonts/Archistico/Archistico_Bold.ttf" (Just TrueType)]
                                 fontWeight bold
                   fontFace $ do fontFamily ["Quicksand"] []
-                                fontFaceSrc [FontFaceSrcUrl "../static/Quicksand/Quicksand-Bold.otf" (Just OpenType)]
+                                fontFaceSrc [FontFaceSrcUrl "/static/fonts/Quicksand/Quicksand-Bold.otf" (Just OpenType)]
                                 fontWeight bold
 centered :: Css
 centered = do width $ pct 100
@@ -68,5 +66,8 @@ centered = do width $ pct 100
 inputStyling :: Css
 inputStyling = do display block
                   sym2 margin (px 0) auto
-                  background $ parse "#222222"
+                  background $ black'
                   color white
+
+black' ::  Color
+black' = parse "#222222"
