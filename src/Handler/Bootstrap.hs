@@ -18,9 +18,9 @@ bootstrapHandler = blaze $ docTypeHtml $
         title "Rendezvous"
         meta ! name "viewport"
              ! content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        stylesheet "static/bootstrap/css/bootstrap.css"
-        stylesheet "static/bootstrap/css/bootstrap-theme.css"
-        stylesheet "static/font-awesome/css/font-awesome.css"
+        stylesheet "static/node_modules/bootstrap/dist/css/bootstrap.css"
+        stylesheet "static/node_modules/bootstrap/dist/css/bootstrap-theme.css"
+        stylesheet "static/node_modules/font-awesome/css/font-awesome.css"
 --------------------------------------------------------------------------------
         body $ do
             div ! class_"container" $ do
@@ -70,8 +70,8 @@ bootstrapHandler = blaze $ docTypeHtml $
                                 li $ a "Login" ! href "#"
                                 li $ a "Register" ! href "#"
 
-        script "" ! src "static/js/jquery-2.1.4.js"
-        script "" ! src "static/bootstrap/js/bootstrap.js"
+        script "" ! src "static/node_modules/jquery/dist/jquery.js"
+        script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
 
 stylesheet :: AttributeValue -> Html
 -- | shorthand helper for inserting a css-stylesheet
