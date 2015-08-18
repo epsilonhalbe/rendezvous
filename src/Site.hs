@@ -76,7 +76,7 @@ rootHandler = blaze $ H.docTypeHtml $
                   H.! A.action "/register" $ do
              H.p $ input' "username" "text"
              H.p $ input' "password"  "password"
-             H.p $ input' "cpassword" "retype password"
+             H.p $ input' "cpassword" "password"
 
              H.a square H.! A.onclick "document.getElementById('register').submit()"
                         H.! A.href "#"
