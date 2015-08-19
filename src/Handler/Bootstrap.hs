@@ -32,7 +32,7 @@ bootstrapHandler = blaze $ docTypeHtml $
                 ! A.style "background: grey; padding-bottom: 20px;"
                 $ do
 
-                h2 "Login"
+                h2 "Login" ! id "login-h2"
 
                 form ! method "POST"
                      ! id     "login"
@@ -52,10 +52,13 @@ bootstrapHandler = blaze $ docTypeHtml $
                         label $ do input ! type_ "checkbox"
                                    "Remember Me"
 
-                        div ! class_ "btn-group pull-right" $ do
+                        div ! class_ "btn-group pull-right"
+                            $ do
                             button "Login"
+                                ! id "login-btn"
                                 ! type_ "button"
                                 ! class_ "btn btn-primary"
+                                ! A.style "width: 80px;"
 
                             button
                                 ! type_ "button"
@@ -68,11 +71,12 @@ bootstrapHandler = blaze $ docTypeHtml $
                                     span "Toggle Dropdown" ! class_ "sr-only"
 
                             ul ! class_ "dropdown-menu" $ do
-                                li $ a "Login" ! href "#"
-                                li $ a "Register" ! href "#"
+                                li $ a "Login"    ! id "li-login"    ! href "#"
+                                li $ a "Register" ! id "li-register" ! href "#"
 
         script "" ! src "static/node_modules/jquery/dist/jquery.js"
         script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
+        script unsafeJS
 
 stylesheet :: AttributeValue -> Html
 -- | shorthand helper for inserting a css-stylesheet
@@ -94,3 +98,12 @@ withAddon addon htmlInput =
 
 dataToggle :: AttributeValue -> Attribute
 dataToggle = dataAttribute "toggle"
+
+
+{-unsafeJS = "$('li').click(function(){alert();});"-}
+unsafeJS = "$('li').click(function(){"
+            <> "$('#login-btn').text($(this).text());"
+            <> "$('#login-h2').text($(this).text());" <>
+            "});"
+
+
