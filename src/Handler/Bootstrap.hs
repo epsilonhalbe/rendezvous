@@ -27,8 +27,9 @@ bootstrapHandler = blaze $ docTypeHtml $
                 h1 $ do text "RENDEZVOUS "
                         small "(ˈrɒndɪvuː)"
                 p "to meet at an agreed time and place"
+
             div ! class_"container"
-                ! A.style "background: grey;"
+                ! A.style "background: grey; padding-bottom: 20px;"
                 $ do
 
                 h2 "Login"
