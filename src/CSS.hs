@@ -5,11 +5,18 @@ import Clay
 import Data.Text.Lazy.IO as T
 
 main :: IO ()
-main = T.writeFile "./static/css/style.css" $ render myStylesheet
+main = do T.writeFile "./static/css/style.css" $ render myStylesheet
+          T.writeFile "./static/css/customBootstrap.css" $ render customBootstrap
+
+customBootstrap :: Css
+customBootstrap = do div # byId "loginbox"
+                         ? do background grey
+                              paddingBottom (px 20)
+                     button # byId "login-btn" ? width (px 80)
+
 
 myStylesheet :: Css
-myStylesheet = do body ?
-                    do background $ black'
+myStylesheet = do body ? background black'
 
                   h1 ? do fontFamily ["Archistico"] [sansSerif]
                           color steelblue
@@ -21,7 +28,7 @@ myStylesheet = do body ?
 
                   (div # byClass "loginbox") ?
                     do background steelblue
-                       color $ black'
+                       color black'
                        centered
                        position relative
                        width  $ px 250
@@ -35,7 +42,7 @@ myStylesheet = do body ?
                       fontWeight bold
                       textShadow (px 1) (px 0) (px 1) black'
                       textShadow (px (-1)) (px 0) (px 1) black'
-                      (textAlign $ alignSide sideCenter)
+                      textAlign $ alignSide sideCenter
 
                   (div # byClass "btn") ?
                       do width $ px 50
@@ -66,7 +73,7 @@ centered = do width $ pct 100
 inputStyling :: Css
 inputStyling = do display block
                   sym2 margin (px 0) auto
-                  background $ black'
+                  background black'
                   color white
 
 black' ::  Color

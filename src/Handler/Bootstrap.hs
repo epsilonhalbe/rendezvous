@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+
 module Handler.Bootstrap where
 
 
@@ -15,68 +16,73 @@ bootstrapHandler :: AppHandler ()
 bootstrapHandler = blaze $ docTypeHtml $
 --------------------------------------------------------------------------------
     do head $ do
-        title "Rendezvous"
-        meta ! name "viewport"
-             ! content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        stylesheet "static/node_modules/bootstrap/dist/css/bootstrap.css"
-        stylesheet "static/node_modules/bootstrap/dist/css/bootstrap-theme.css"
-        stylesheet "static/node_modules/font-awesome/css/font-awesome.css"
+         title "Rendezvous"
+         meta ! name "viewport"
+              ! content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+         stylesheet "static/node_modules/bootstrap/dist/css/bootstrap.css"
+         stylesheet "static/node_modules/bootstrap/dist/css/bootstrap-theme.css"
+         stylesheet "static/node_modules/font-awesome/css/font-awesome.css"
+         stylesheet "static/css/customBootstrap.css"
 --------------------------------------------------------------------------------
-        body $ do
-            div ! class_"container" $ do
-                h1 $ do text "RENDEZVOUS "
-                        small "(ˈrɒndɪvuː)"
-                p "to meet at an agreed time and place"
+       body $ do
+           div ! class_"container" $ do
+               h1 $ do text "RENDEZVOUS "
+                       small "(ˈrɒndɪvuː)"
+               p "to meet at an agreed time and place"
 
-            div ! class_"container"
-                ! A.style "background: grey; padding-bottom: 20px;"
-                $ do
+           div ! class_"container"
+               ! id "loginbox"
+               $ do
 
-                h2 "Login" ! id "login-h2"
+               h2 "Login" ! id "login-h2"
 
-                form ! method "POST"
-                     ! id     "login"
-                     ! action "/login" $ do
+               form ! method "POST"
+                    ! id     "login"
+                    ! action "/login" $ do
+                   div ! id "input-div" $ do
 
-                    withAddon "envelope" $
-                        input ! class_ "form-control"
-                              ! type_ "text"
-                              ! placeholder "email/username"
+                     withAddon "envelope" $
+                         input ! class_ "form-control"
+                               ! type_ "text"
+                               ! placeholder "email/username"
 
-                    withAddon "lock" $
-                        input ! class_ "form-control"
-                              ! type_ "password"
-                              ! placeholder "password"
+                     withAddon "lock" ! id "password-div" $
+                         input ! class_ "form-control"
+                               ! type_ "password"
+                               ! placeholder "password"
 
-                    div ! class_ "checkbox" $ do
-                        label $ do input ! type_ "checkbox"
-                                   "Remember Me"
+                   div ! id "remember-div" $ do
+                       label ! id "remember-label"
+                             $ do input ! id "remember"
+                                        ! type_ "checkbox"
+                                  "Remember Me"
 
-                        div ! class_ "btn-group pull-right"
-                            $ do
-                            button "Login"
-                                ! id "login-btn"
-                                ! type_ "button"
-                                ! class_ "btn btn-primary"
-                                ! A.style "width: 80px;"
+                       div ! class_ "btn-group pull-right"
+                           ! id "login-btn-div"
+                           $ do
+                           button "Login"
+                               ! id "login-btn"
+                               ! type_ "submit"
+                               ! class_ "btn btn-primary"
+                               ! action "submit"
 
-                            button
-                                ! type_ "button"
-                                ! class_ "btn btn-primary dropdown-toggle"
-                                ! dataToggle "dropdown"
-                                ! customAttribute "aria-haspopup" "true"
-                                ! customAttribute "aria-expanded" "false"
-                                $ do
-                                    span "" ! class_ "caret"
-                                    span "Toggle Dropdown" ! class_ "sr-only"
+                           button
+                               ! type_ "button"
+                               ! class_ "btn btn-primary dropdown-toggle"
+                               ! dataToggle "dropdown"
+                               ! customAttribute "aria-haspopup" "true"
+                               ! customAttribute "aria-expanded" "false"
+                               $ do
+                                   span "" ! class_ "caret"
+                                   span "Toggle Dropdown" ! class_ "sr-only"
 
-                            ul ! class_ "dropdown-menu" $ do
-                                li $ a "Login"    ! id "li-login"    ! href "#"
-                                li $ a "Register" ! id "li-register" ! href "#"
+                           ul ! class_ "dropdown-menu" $ do
+                               li $ a "Login"    ! id "li-login"
+                               li $ a "Register" ! id "li-register"
 
-        script "" ! src "static/node_modules/jquery/dist/jquery.js"
-        script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
-        script unsafeJS
+       script "" ! src "static/node_modules/jquery/dist/jquery.js"
+       script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
+       script "" ! src "static/js/custom.js"
 
 stylesheet :: AttributeValue -> Html
 -- | shorthand helper for inserting a css-stylesheet
@@ -91,19 +97,11 @@ faIcon str = i "" ! class_ ("fa fa-fw fa-" <> str)
 
 withAddon :: AttributeValue -> Html -> Html
 withAddon addon htmlInput =
-        div ! class_ "form-group" $ do
+        div ! class_ "form-group" $
             div ! class_"input-group" $ do
                 p ! class_ "input-group-addon" $ faIcon addon
                 htmlInput
 
 dataToggle :: AttributeValue -> Attribute
 dataToggle = dataAttribute "toggle"
-
-
-{-unsafeJS = "$('li').click(function(){alert();});"-}
-unsafeJS = "$('li').click(function(){"
-            <> "$('#login-btn').text($(this).text());"
-            <> "$('#login-h2').text($(this).text());" <>
-            "});"
-
 
