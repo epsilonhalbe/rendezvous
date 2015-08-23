@@ -6,6 +6,9 @@ log/
 dist/
 static/
 .cabal-sandbox
+.psci
+.psci_modules
+bower_components
 
 !rendezvous.cabal
 !.gitignore
