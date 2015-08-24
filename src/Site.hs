@@ -26,9 +26,7 @@ import           Handler
 ------------------------------------------------------------------------------
 -- | The application's routes.
 routes :: [(ByteString, Handler App App ())]
-routes = [("/"          , rootHandler)
-
-         ,("/bootstrap" , bootstrapHandler)
+routes = [("/"          , bootstrapHandler)
          ,("/login"     , with auth $ loginHandler)
          ,("/register"  , with auth $ registerHandler)
 
