@@ -1,8 +1,8 @@
 module Handler
-  (module Handler.Bootstrap
+  (module Handler.Root
   ,module Handler.Login
   ,module Handler.Register) where
 
-import Handler.Bootstrap
+import Handler.Root
 import Handler.Login
 import Handler.Register

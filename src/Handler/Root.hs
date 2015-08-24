@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 
-module Handler.Bootstrap where
+module Handler.Root where
 
 
 import Data.Monoid ((<>))
@@ -12,8 +12,8 @@ import Snap.Blaze (blaze)
 import Prelude hiding (div, head, id, span)
 import Application
 
-bootstrapHandler :: AppHandler ()
-bootstrapHandler = blaze $ docTypeHtml $
+rootHandler :: AppHandler ()
+rootHandler = blaze $ docTypeHtml $
 --------------------------------------------------------------------------------
     do head $ do
          title "Rendezvous"
