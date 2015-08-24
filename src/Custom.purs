@@ -7,6 +7,7 @@ import Control.Monad.Eff.Console
 import Control.Bind ((=<<))
 import Data.Either
 import Data.Monoid
+import Data.String (toLower)
 
 import qualified Data.Foreign as F
 import DOM (DOM())
@@ -28,13 +29,19 @@ fun _ _ = do content <- (F.readString <$> (J.getValue =<< J.select "this"))
                   Right "Register" -> do J.select "#remember-label" >>= J.remove
                                          jqueryDiv <- J.create cpasswordDiv
                                          J.select "#confirm-div" >>= J.append jqueryDiv
-                                         return unit
+                                         aux "Register"
 
                   Right "Login" -> do J.select "#confirm-div" >>= J.remove
                                       jqueryDiv <- J.create rememberDiv
                                       J.select "#remember-div" >>= J.append jqueryDiv
-                                      return unit
+                                      aux "Login"
                   _ -> return unit
+
+    where aux :: forall eff. String -> Eff (dom :: DOM | eff) Unit
+          aux str = do J.select "#login-btn" >>= J.setValue str
+                       J.select "#login" >>= J.setAttr "action" ("/" ++ toLower str)
+                       J.select "#login-h2" >>= J.setValue str
+                       return unit
 
 
 
