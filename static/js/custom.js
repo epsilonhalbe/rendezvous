@@ -12,6 +12,7 @@ $("li").click(function(){
                     + "</p>"
                     + "<input class=\"form-control\""
                           + " id=\"cpassword\""
+                          + " name=\"cpassword\""
                           + " type=\"password\""
                           + " placeholder=\"retype password\">"
                   + "</div>"

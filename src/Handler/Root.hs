@@ -44,11 +44,13 @@ rootHandler = blaze $ docTypeHtml $
                      withAddon "envelope" $
                          input ! class_ "form-control"
                                ! type_ "text"
+                               ! name "username"
                                ! placeholder "email/username"
 
                      withAddon "lock" ! id "password-div" $
                          input ! class_ "form-control"
                                ! type_ "password"
+                               ! name "password"
                                ! placeholder "password"
 
                    div ! id "remember-div" $ do
