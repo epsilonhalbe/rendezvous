@@ -33,6 +33,7 @@ routes :: [(ByteString, Handler App App ())]
 routes = [("/"          , rootHandler)
          ,("/login"     , with auth $ loginHandler)
          ,("/register"  , with auth $ registerHandler)
+         ,("/dashboard" , with auth $ dashboardHandler)
 
          ,("/static"    , serveDirectory "static")
          ]
