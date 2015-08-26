@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Handler.Login where
+module Handler.Login
+    (loginHandler) where
 
 import Snap.Snaplet.Auth (loginUser, currentUser)
 import Text.Blaze.Html5

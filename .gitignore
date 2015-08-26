@@ -5,7 +5,9 @@ cabal.sandbox.config
 log/
 dist/
 static/
+snaplets/
 .cabal-sandbox
+test.db
 
 !rendezvous.cabal
 !.gitignore

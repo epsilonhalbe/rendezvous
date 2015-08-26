@@ -10,12 +10,16 @@ module Site
 
 ------------------------------------------------------------------------------
 import           Data.ByteString (ByteString)
+import           Control.Concurrent
+import           Control.Monad.Trans (liftIO)
+import           Control.Lens
 
 import           Snap
 import           Snap.Snaplet.Auth
-import           Snap.Snaplet.Auth.Backends.JsonFile
+import           Snap.Snaplet.Auth.Backends.SqliteSimple
 import           Snap.Snaplet.Heist (heistInit)
 import           Snap.Snaplet.Session.Backends.CookieSession
+import           Snap.Snaplet.SqliteSimple
 import           Snap.Util.FileServe
 
 ------------------------------------------------------------------------------
@@ -37,16 +41,14 @@ routes = [("/"          , rootHandler)
 -- | The application initializer.
 app :: SnapletInit App App
 app = makeSnaplet "app" "An snaplet example application." Nothing $ do
+    addRoutes routes
     h <- nestSnaplet "" heist $ heistInit "templates"
+    d <- nestSnaplet "db" db sqliteInit
     s <- nestSnaplet "sess" sess $
            initCookieSessionManager "site_key.txt" "sess" (Just 3600)
-
-    -- NOTE: We're using initJsonFileAuthManager here because it's easy and
-    -- doesn't require any kind of database server to run.  In practice,
-    -- you'll probably want to change this to a more robust auth backend.
-    a <- nestSnaplet "auth" auth $
-           initJsonFileAuthManager defAuthSettings sess "users.json"
-    addRoutes routes
+    a <- nestSnaplet "auth" auth $ initSqliteAuth sess d
+    {-let c = sqliteConn $ d ^# snapletValue-}
+    {-liftIO $ withMVar c $ \conn -> Db.createTables conn-}
     addAuthSplices h auth
-    return $ App h s a
+    return $ App h s d a
 

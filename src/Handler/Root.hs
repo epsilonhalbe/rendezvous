@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 
-module Handler.Root where
+module Handler.Root
+    (rootHandler) where
 
 
 import Data.Monoid ((<>))

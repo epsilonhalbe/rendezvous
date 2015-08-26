@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Handler.Register where
+module Handler.Register
+    (registerHandler) where
 
 import Snap.Core (getParam)
 import Snap.Snaplet.Auth (registerUser)

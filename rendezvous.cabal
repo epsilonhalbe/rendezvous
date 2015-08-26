@@ -24,7 +24,7 @@ source-repository   head
     type:     git
     location: ssh://epsilonhalbe@github.com/rendezvous.git
 
-Flag development
+Flag dev
   Description: Whether to build the server in development (interpreted) mode
   Default: False
 
@@ -36,24 +36,26 @@ Executable rendezvous
   main-is:             Main.hs
 
   GHC-Options: -fwarn-unused-imports
-  build-depends: base                      >= 4.8   && < 4.9
-               , blaze-html                >= 0.8   && < 0.9
-               , bytestring                >= 0.10  && < 0.11
-               , heist                     >= 0.14  && < 0.15
-               , lens                      >= 4.12  && < 4.13
-               , MonadCatchIO-transformers >= 0.2.1 && < 0.4
-               , mtl                       >= 2     && < 3
-               , snap                      >= 0.14  && < 0.15
-               , snap-blaze                >= 0.2.1 && < 0.3
-               , snap-core                 >= 0.9   && < 0.10
-               , snap-loader-static        >= 0.9   && < 0.10
-               , snap-server               >= 0.9   && < 0.10
-               , text                      >= 1.2   && < 1.3
-               , time                      >= 1.1   && < 1.6
-               , xmlhtml                   >= 0.1   && < 0.3
+  build-depends: base                      >= 4.8     && < 4.9
+               , blaze-html                >= 0.8     && < 0.9
+               , blaze-markup              >= 0.7.0.2 && < 0.8
+               , bytestring                >= 0.10    && < 0.11
+               , heist                     >= 0.14    && < 0.15
+               , lens                      >= 4.12    && < 4.13
+               , MonadCatchIO-transformers >= 0.2.1   && < 0.4
+               , mtl                       >= 2       && < 3
+               , snap                      >= 0.14    && < 0.15
+               , snap-blaze                >= 0.2.1   && < 0.3
+               , snap-core                 >= 0.9     && < 0.10
+               , snap-loader-static        >= 0.9     && < 0.10
+               , snaplet-sqlite-simple     >= 0.4.8   && < 0.5
+               , snap-server               >= 0.9     && < 0.10
+               , text                      >= 1.2     && < 1.3
+               , time                      >= 1.1     && < 1.6
+               , xmlhtml                   >= 0.1     && < 0.3
                , snap-loader-dynamic       == 0.10.*
 
-  if flag(development)
+  if flag(dev)
     cpp-options: -DDEVELOPMENT
     ghc-options: -threaded -w
   else
