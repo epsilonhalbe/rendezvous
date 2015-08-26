@@ -8,6 +8,10 @@ static/
 snaplets/
 .cabal-sandbox
 test.db
+.psci
+.psci_modules
+bower_components
+output
 
 !rendezvous.cabal
 !.gitignore
