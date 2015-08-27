@@ -3,18 +3,25 @@ module Data where
 
 import Control.Lens
 import Snap.Snaplet.Auth (UserId)
-import Data.Map.Lazy (Map)
+import Data.Map.Lazy as Map (Map, keys, lookup, foldl)
 import Data.Time
-import Data.ByteString.Lazy
+import Data.ByteString.Lazy (ByteString)
+import Data.List (intersect)
+import Data.Maybe (fromMaybe)
 
 data Status = OK | TODO | CANCELLED | PENDING
 
 data Confirmation = Accepted | Percent Int | Declined
 
+acceptable :: Confirmation -> Bool
+acceptable Accepted = True
+acceptable (Percent n) = n >= 66
+acceptable _ = False
+
 data Coordinate = Coord { _location  :: String
                         , _startTime :: UTCTime
                         , _endTime   :: UTCTime
-                        , _timeZone  :: TimeZone}
+                        , _timeZone  :: TimeZone} deriving (Eq)
 
 makeLenses ''Coordinate
 
@@ -24,17 +31,35 @@ data Attachment = Attachment { _attId      :: Int
                              , _attContent :: ByteString}
 makeLenses ''Attachment
 
+data Comment = Comment (UserId, UTCTime, String)
 
 data Rendezvous = Rdv  { _rdvId            :: Int
                        , _rdvTitle         :: String
                        , _rdvInitiator     :: UserId
                        , _rdvConfirms      :: Map UserId [(Coordinate, Confirmation)]
-                       , _rdvComments      :: [(UserId, UTCTime, String)]
+                       , _rdvComments      :: [Comment]
                        , _rdvAttachments   :: [Attachment]
                        , _rdvFix           :: Maybe Coordinate
                        }
 
 makeLenses ''Rendezvous
 
--- TODO make lenses for participants,
--- TODO hash for identifying changes ??
+rdvParticipants :: Rendezvous -> [UserId]
+rdvParticipants = keys . view rdvConfirms
+
+rdvCoordinates :: Rendezvous -> [Coordinate]
+rdvCoordinates = map fst . rdvCoordConfirm
+
+rdvCoordConfirm :: Rendezvous -> [(Coordinate, Confirmation)]
+rdvCoordConfirm r =  fromMaybe [] coords
+                 where coords = (r^.rdvInitiator) `Map.lookup` (r^.rdvConfirms)
+
+findConsensus :: Rendezvous -> [Coordinate]
+findConsensus r = let coords = rdvCoordinates r
+                      confirms = r ^. rdvConfirms
+                  in Map.foldl aux coords confirms
+    where aux :: [Coordinate] -> [(Coordinate, Confirmation)] -> [Coordinate]
+          aux lst lstPair = lst ∩ (map fst $ filter (acceptable.snd) lstPair)
+
+(∩) :: Eq a => [a] -> [a] -> [a]
+(∩) = intersect
