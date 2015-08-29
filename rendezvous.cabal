@@ -31,7 +31,7 @@ Flag dev
 
 
 Executable rendezvous
-  hs-source-dirs: src
+  hs-source-dirs: src, tst
   default-language:    Haskell2010
   main-is:             Main.hs
   other-modules:       Site
@@ -42,6 +42,7 @@ Executable rendezvous
                ,       Handler.Login
                ,       Handler.Register
                ,       Handler.Dashboard
+               ,       Test.Data
 
 
   GHC-Options: -fwarn-unused-imports
@@ -81,10 +82,9 @@ Executable css
   hs-source-dirs: src
   default-language:    Haskell2010
   main-is:             CSS.hs
-  build-depends: base                      >= 4.8   && < 4.9
+  build-depends: base >= 4.8   && < 4.9
                , clay
-               , text                      >= 1.2   && < 1.3
-
+               , text >= 1.2   && < 1.3
 
 
   -- other-modules:
