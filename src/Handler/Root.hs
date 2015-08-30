@@ -4,14 +4,14 @@
 module Handler.Root
     (rootHandler) where
 
-
-import Data.Monoid ((<>))
 import Text.Blaze.Html5 as H
 import Text.Blaze.Html5.Attributes as A hiding (form, label, title, span)
 import Snap.Blaze (blaze)
 
 import Prelude hiding (div, head, id, span)
 import Application
+
+import Html.Util
 
 rootHandler :: AppHandler ()
 rootHandler = blaze $ docTypeHtml $
@@ -26,7 +26,8 @@ rootHandler = blaze $ docTypeHtml $
          stylesheet "static/css/customBootstrap.css"
 --------------------------------------------------------------------------------
        body $ do
-           div ! class_"container" $ do
+           div ! class_ "container"
+               ! id "loginhead" $ do
                h1 $ do text "RENDEZVOUS "
                        small "(ˈrɒndɪvuː)"
                p "to meet at an agreed time and place"
@@ -58,7 +59,7 @@ rootHandler = blaze $ docTypeHtml $
                        label ! id "remember-label"
                              $ do input ! id "remember"
                                         ! type_ "checkbox"
-                                  "Remember Me"
+                                  " Remember Me"
 
                        div ! class_ "btn-group pull-right"
                            ! id "login-btn-div"
@@ -86,25 +87,4 @@ rootHandler = blaze $ docTypeHtml $
        script "" ! src "static/node_modules/jquery/dist/jquery.js"
        script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
        script "" ! src "static/js/custom.js"
-
-stylesheet :: AttributeValue -> Html
--- | shorthand helper for inserting a css-stylesheet
-stylesheet url = link ! rel "stylesheet"
-                      ! type_ "text/css"
-                      ! href url
-
-faIcon :: AttributeValue -> Html
--- | inserts a fontawsome icon (fa) with fixed width (fa-fw)
--- see http://fontawesome.io/icons/ for a complete set of icons
-faIcon str = i "" ! class_ ("fa fa-fw fa-" <> str)
-
-withAddon :: AttributeValue -> Html -> Html
-withAddon addon htmlInput =
-        div ! class_ "form-group" $
-            div ! class_"input-group" $ do
-                p ! class_ "input-group-addon" $ faIcon addon
-                htmlInput
-
-dataToggle :: AttributeValue -> Attribute
-dataToggle = dataAttribute "toggle"
 

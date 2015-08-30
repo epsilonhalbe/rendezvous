@@ -36,5 +36,4 @@ instance HasSqlite (Handler b App) where
 type AppHandler = Handler App App
 type AuthHandler = Handler App (AuthManager App)
 
-data Status = OK | TODO | CANCELLED | PENDING
 

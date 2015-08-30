@@ -10,9 +10,6 @@ module Site
 
 ------------------------------------------------------------------------------
 import           Data.ByteString (ByteString)
-import           Control.Concurrent
-import           Control.Monad.Trans (liftIO)
-import           Control.Lens
 
 import           Snap
 import           Snap.Snaplet.Auth
@@ -31,9 +28,9 @@ import           Handler
 -- | The application's routes.
 routes :: [(ByteString, Handler App App ())]
 routes = [("/"          , rootHandler)
-         ,("/login"     , with auth $ loginHandler)
-         ,("/register"  , with auth $ registerHandler)
-         ,("/dashboard" , with auth $ dashboardHandler)
+         ,("/login"     , with auth loginHandler)
+         ,("/register"  , with auth registerHandler)
+         ,("/dashboard" , with auth dashboardHandler)
 
          ,("/static"    , serveDirectory "static")
          ]

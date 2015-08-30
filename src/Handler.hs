@@ -1,10 +1,9 @@
 module Handler
-  (module Handler.Root
-  ,module Handler.Login
-  ,module Handler.Dashboard
-  ,module Handler.Register) where
+  (module H) where
 
-import Handler.Root
-import Handler.Login
-import Handler.Dashboard
-import Handler.Register
+
+import Handler.Root      as H
+import Handler.Login     as H
+import Handler.Dashboard as H
+import Handler.Register  as H
+
