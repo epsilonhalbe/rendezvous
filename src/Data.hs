@@ -112,13 +112,23 @@ instance ToMarkup Rendezvous where
         panelDiv $ do titleDiv
                       participantDiv
                       progressDiv
-        where panelDiv = div ! class_ ("panel panel-" <> maybe "default" (const "primary") _rdvFix)
-              titleDiv = div ! class_ "panel-heading" $
-                             a ! dataToggle "collapse"
-                               ! href (fromString $ "#" ++ show _rdvId ) $
-                                 h3 ! class_ "panel-title" $ do
-                                    string _rdvTitle ! class_ "rdv-title"
-                                    string $ maybe "" ((' ' :).show) _rdvFix
+                      editModal
+        where ifFixed =  maybe "default" (const "primary") _rdvFix
+              panelDiv = div ! class_ ("panel panel-" <> ifFixed)
+              titleDiv = div ! class_ "panel-heading clearfix" $ do
+                             h4 ! class_ "panel-title pull-left"
+                                $ do
+                                a ! dataToggle "collapse"
+                                  ! href (fromString $ "#" ++ show _rdvId ) $ do
+                                  strong (string _rdvTitle ! class_ "rdv-title")
+                                  br
+                                  string $ maybe "" (('\n' :).show) _rdvFix
+                             div ! class_ "btn-group pull-right" $
+                                 a ! class_ ("btn btn-" <> ifFixed <> " btn-small")
+                                   ! href "#"
+                                   ! dataTarget "#myModal"
+                                   ! dataToggle "modal"
+                                   $ faIcon "eye"
 
               participantDiv =  div ! (id . fromString $ show _rdvId)
                                     ! class_ "panel-collapse collapse" $
@@ -182,12 +192,95 @@ findConsensus r = let _coords = rdvCoordinates r
 (∩) :: Eq a => [a] -> [a] -> [a]
 (∩) = intersect
 
+editModal ::  Html
+editModal = div ! class_ "modal fade"
+                ! A.style "display: none;"
+                ! id "myModal"
+                ! tabindex "-1"
+                ! ariaLabelledBy "myModalLabel" $
+                div ! class_ "modal-dialog" $
+                  div ! class_ "modal-content" $ do
+                    div ! class_ "modal-header" $ do
+                      button ! type_ "button"
+                             ! class_ "close"
+                             ! dataDismiss "modal"
+                             ! ariaLabel "Close" $
+                             span "×" ! ariaHidden "true"
+                      h4 ! class_ "modal-title"
+                         ! id "myModalLabel"
+                         $ "Testtitel für das Modal"
+--                      small "Martin Heuschober (initiator)"
+                    div ! class_ "modal-body" $
+                        modalContent
+                    div ! class_ "modal-footer" $ do
+                      button ! type_ "button"
+                             ! class_ "btn btn-default"
+                             ! dataDismiss "modal"
+                             $ "Close"
+                      button ! type_ "button"
+                             ! class_ "btn btn-primary"
+                             $ "Save changes"
 
-
-
-
-
-
+modalContent ::  Html
+modalContent = div ! class_ "scrollable-table table-responsive"
+                   $ do table ! class_ "table table-striped table-header-rotated"
+                              $ do
+                          thead $ tr
+                              $ do
+                                   th ""
+                                   th ! class_ "rotate-45" $ div $ span
+                                      $ do div "Location"
+                                           div "from"
+                                           div "to"
+                                   th ! class_ "rotate-45" $ div $ span
+                                      $ do div "Location Location Location Location"
+                                           div "from    from    from    from    "
+                                           div "to      to      to      to      "
+                                   th ! class_ "rotate-45" $ div $ span
+                                      $ do div "Location"
+                                           div "from"
+                                           div "to"
+                          tbody $ do
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                tr $ do 
+                                    th "Martin Heuschober"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
+                                    td "[yes|maybe|no]"
 
 
 

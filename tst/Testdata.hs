@@ -23,8 +23,9 @@ rdv = Rdv { _rdvId = 1
                                                           [1..]
           , _rdvComments = [Comment (UserId "")  (mkTime "2015-07-12 12:00:00") "Wohooo a comment!"]
           , _rdvAttachments = []
-          , _rdvFix = Nothing
-          {-, _rdvFix = Just (head coords)-}
+          {-, _rdvFix = Nothing-}
+          , _rdvFix = Just (head coords)
+
           }
 
 mkTime :: String -> UTCTime
