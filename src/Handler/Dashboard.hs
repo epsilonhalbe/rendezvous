@@ -6,7 +6,7 @@ module Handler.Dashboard
 
 import Text.Blaze.Html5 as H
 import Text.Blaze.Html5.Attributes as A hiding (form, label, title, span)
-import qualified Text.Blaze.Html5.Attributes as A
+
 import Snap.Blaze (blaze)
 
 import Prelude hiding (div, head, id, span)
@@ -78,6 +78,7 @@ dashboardHandler = blaze $ docTypeHtml $
                                 rdv1
                                 rdv3
                                 yesMaybeNo
+                                yesMaybeNo
                         div ! class_ "col-md-6" $ do
                             h2 "Past RDV"
                             div ! class_ "panel-group"
@@ -87,6 +88,7 @@ dashboardHandler = blaze $ docTypeHtml $
             script "" ! src "static/node_modules/jquery/dist/jquery.js"
             script "" ! src "static/node_modules/bootstrap/dist/js/bootstrap.js"
             script "" ! src "static/js/custom.js"
+            script "" ! src "static/js/dashboard.js"
 
 rdv3 :: Html
 rdv3 = toMarkup rdv
@@ -166,10 +168,12 @@ yesMaybeNo = div ! class_ "btn-group input-group form-group"
                                        ! id "opt-ok"
                                        ! autocomplete "off"
                                  faIcon "check"
-                      input ! class_ "form-control"
-                            ! placeholder "0-100 %"
-                            ! A.style "padding: 0 0 0 5px; width: 30px;"
+                      input ! id "input-maybe"
+                            ! class_ "form-control"
+                            ! placeholder "0-100"
+                            ! A.style "padding: 0 0 0 5px; width: 48px; display: none;"
                       label ! class_ "btn btn-warning"
+                            ! id "label-maybe"
                             $ do input ! type_ "radio"
                                        ! name "options"
                                        ! class_ "maybe-radio"
