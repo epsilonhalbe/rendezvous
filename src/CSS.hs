@@ -29,4 +29,8 @@ customBootstrap = do div # byId "loginbox"
                             width (px 30)
                      th # byClass "rotated" |> div |> span ?
                          borderBottom solid (px 1) (parse "#ccc")
+                     th # byClass "rotate-45" ? do
+                         height (px 200)
+                         borderBottom solid (px 1) (parse "#ccc")
+                         {-transforms [rotate (deg $ -90)]-}
                      label # byClass "btn" # byClass "active" ? textShadow (px 1) (px 1) (px 1) black

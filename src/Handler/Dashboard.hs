@@ -77,8 +77,6 @@ dashboardHandler = blaze $ docTypeHtml $
                                 ! id "active-rdv" $ do
                                 rdv1
                                 rdv3
-                                yesMaybeNo
-                                yesMaybeNo
                         div ! class_ "col-md-6" $ do
                             h2 "Past RDV"
                             div ! class_ "panel-group"
@@ -158,31 +156,3 @@ rdv2 =div ! class_ "panel panel-warning" $ do
                           text "Hertin Mauschober"
 
 
-yesMaybeNo :: Html
-yesMaybeNo = div ! class_ "btn-group input-group form-group"
-                 ! A.style "margin-top: 10px;"
-                 ! dataToggle "buttons"
-                 $ do label ! class_ "btn btn-success"
-                            $ do input ! type_ "radio"
-                                       ! name "options"
-                                       ! id "opt-ok"
-                                       ! autocomplete "off"
-                                 faIcon "check"
-                      input ! id "input-maybe"
-                            ! class_ "form-control"
-                            ! placeholder "0-100"
-                            ! A.style "padding: 0 0 0 5px; width: 48px; display: none;"
-                      label ! class_ "btn btn-warning"
-                            ! id "label-maybe"
-                            $ do input ! type_ "radio"
-                                       ! name "options"
-                                       ! class_ "maybe-radio"
-                                       ! id "opt-maybe"
-                                       ! autocomplete "off"
-                                 faIcon "question"
-                      label ! class_ "btn btn-danger"
-                            $ do input ! type_ "radio"
-                                       ! name "options"
-                                       ! id "opt-nok"
-                                       ! autocomplete "off"
-                                 faIcon "times"

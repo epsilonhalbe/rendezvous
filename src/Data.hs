@@ -116,8 +116,7 @@ instance ToMarkup Rendezvous where
         where ifFixed =  maybe "default" (const "primary") _rdvFix
               panelDiv = div ! class_ ("panel panel-" <> ifFixed)
               titleDiv = div ! class_ "panel-heading clearfix" $ do
-                             h4 ! class_ "panel-title pull-left"
-                                $ do
+                             h4 ! class_ "panel-title pull-left" $
                                 a ! dataToggle "collapse"
                                   ! href (fromString $ "#" ++ show _rdvId ) $ do
                                   strong (string _rdvTitle ! class_ "rdv-title")
@@ -193,9 +192,11 @@ findConsensus r = let _coords = rdvCoordinates r
 (∩) = intersect
 
 editModal ::  Html
-editModal = div ! class_ "modal fade"
-                ! A.style "display: none;"
-                ! id "myModal"
+editModal = div ! id "myModal"
+                {-! A.style "display: none;"-}
+                {-! class_ "modal fade"-}
+                ! A.style "display: block;"
+                ! class_ "modal fade in"
                 ! tabindex "-1"
                 ! ariaLabelledBy "myModalLabel" $
                 div ! class_ "modal-dialog" $
@@ -223,72 +224,92 @@ editModal = div ! class_ "modal fade"
 
 modalContent ::  Html
 modalContent = div ! class_ "scrollable-table table-responsive"
-                   $ do table ! class_ "table table-striped table-header-rotated"
-                              $ do
-                          thead $ tr
-                              $ do
-                                   th ""
-                                   th ! class_ "rotate-45" $ div $ span
-                                      $ do div "Location"
-                                           div "from"
-                                           div "to"
-                                   th ! class_ "rotate-45" $ div $ span
-                                      $ do div "Location Location Location Location"
-                                           div "from    from    from    from    "
-                                           div "to      to      to      to      "
-                                   th ! class_ "rotate-45" $ div $ span
-                                      $ do div "Location"
-                                           div "from"
-                                           div "to"
+                   {-$ table ! class_ "table table-striped table-header-rotated"-}
+                   $ table ! class_ "table table-striped" $
+                       do thead $ tr
+                              $ do th ""
+                                   th ! A.style "padding: 0 0 0 0;"
+                                      $ test
+                                   th ! A.style "padding: 0 0 0 0;"
+                                      $ test
+                                   th ! A.style "padding: 0 0 0 0;"
+                                      $ test
                           tbody $ do
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                tr $ do 
-                                    th "Martin Heuschober"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
-                                    td "[yes|maybe|no]"
+                                tr $ do
+                                    th ! A.style "vertical-align: middle;" $ "Martin Heuschober"
+                                    mconcat $ replicate 3 yesMaybeNo'
+                                tr $ do
+                                    th "Hartin Meuschober"
+                                    yesMaybeNo'
+                                    yesMaybeNo'
+                                    yesMaybeNo'
+    where yesMaybeNo' = td yesMaybeNo
 
+yesMaybeNo :: Html
+yesMaybeNo = div ! class_ "btn-group input-group form-group pull-right"
+                 ! A.style "margin-top: 10px;"
+                 ! dataToggle "buttons"
+                 $ do label ! class_ "btn btn-success"
+                            $ do input ! type_ "radio"
+                                       ! name "options"
+                                       ! id "opt-ok"
+                                       ! autocomplete "off"
+                                 faIcon "check"
+                      input ! id "input-maybe"
+                            ! class_ "form-control"
+                            ! placeholder "0-100"
+                            ! A.style "padding: 0 0 0 5px; width: 48px; display: none;"
+                      label ! class_ "btn btn-warning"
+                            ! id "label-maybe"
+                            $ do input ! type_ "radio"
+                                       ! name "options"
+                                       ! class_ "maybe-radio"
+                                       ! id "opt-maybe"
+                                       ! autocomplete "off"
+                                 faIcon "question"
+                      label ! class_ "btn btn-danger"
+                            $ do input ! type_ "radio"
+                                       ! name "options"
+                                       ! id "opt-nok"
+                                       ! autocomplete "off"
+                                 faIcon "times"
 
-
-
-
-
-
-
-
-
+test :: Html
+test = div ! class_ "form-group"
+           ! A.style "margin-bottom: 0px;" $ do
+           ul ! class_ "list-group"
+              ! A.style "margin-bottom: 0px;"
+              $ li ! class_ "list-group-item"
+                   ! A.style "background-color: #eee;"
+                   $ do div "T-Center"
+                        small $ do text "12.08.2015 13"
+                                   sup "00"
+                                   text "-14"
+                                   sup "00"
+           div ! class_"input-group" $ do
+               a ! class_ "input-group-addon"
+                 $ faIcon "globe" ! href "https://www.google.at/maps/place/T-Mobile/@48.1867866,16.4030867,17z/data=!3m1!4b1!4m2!3m1!1s0x476d0758bd8a5b27:0xc82262fbd030dbd0"
+               ul ! class_ "list-group"
+                  ! A.style "margin-bottom: 0px;"
+                  $ do li ! class_ "list-group-item"
+                          ! A.style (  "padding-bottom: 0px;"
+                                    <> "padding-top: 0px;")
+                          $ h4 "T-Center"
+                       li ! class_ "list-group-item" $ do
+                          div "Room 4c08"
+                          div "Rennweg 97-99"
+                          div "A-1030"
+                          div "Vienna"
+                          div "Austria"
+           div ! class_"input-group" $ do
+               span ! class_ "input-group-addon"
+                    $ faIcon "clock-o" ! href "https://www.google.at/maps/place/T-Mobile/@48.1867866,16.4030867,17z/data=!3m1!4b1!4m2!3m1!1s0x476d0758bd8a5b27:0xc82262fbd030dbd0"
+               ul ! class_ "list-group"
+                  ! A.style "margin-bottom: 0px;"
+                  $ do li ! class_ "list-group-item"
+                          ! A.style "padding-bottom: 5px;"
+                          $ text "12" <> sup "th" <> text " Aug. 2015, 13" <> sup "00"
+                       li ! class_ "list-group-item"
+                          ! A.style "padding-top: 5px;"
+                          $ text "12" <> sup "th" <> text " Aug. 2015, 14" <> sup "00"
 
