@@ -193,10 +193,9 @@ findConsensus r = let _coords = rdvCoordinates r
 
 editModal ::  Html
 editModal = div ! id "myModal"
-                {-! A.style "display: none;"-}
-                {-! class_ "modal fade"-}
-                ! A.style "display: block;"
-                ! class_ "modal fade in"
+                ! class_ "modal fade"
+                {-! A.style "display: block;"-}
+                {-! class_ "modal fade in"-}
                 ! tabindex "-1"
                 ! ariaLabelledBy "myModalLabel" $
                 div ! class_ "modal-dialog" $
@@ -224,7 +223,6 @@ editModal = div ! id "myModal"
 
 modalContent ::  Html
 modalContent = div ! class_ "scrollable-table table-responsive"
-                   {-$ table ! class_ "table table-striped table-header-rotated"-}
                    $ table ! class_ "table table-striped" $
                        do thead $ tr
                               $ do th ""
