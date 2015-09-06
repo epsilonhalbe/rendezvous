@@ -209,7 +209,6 @@ editModal = div ! id "myModal"
                       h4 ! class_ "modal-title"
                          ! id "myModalLabel"
                          $ "Testtitel für das Modal"
---                      small "Martin Heuschober (initiator)"
                     div ! class_ "modal-body" $
                         modalContent
                     div ! class_ "modal-footer" $ do
@@ -238,10 +237,32 @@ modalContent = div ! class_ "scrollable-table table-responsive"
                                     mconcat $ replicate 3 yesMaybeNo'
                                 tr $ do
                                     th ! A.style "vertical-align: middle;" $ "Hartin Meuschober"
-                                    yesMaybeNo'
-                                    yesMaybeNo'
-                                    yesMaybeNo'
+                                    yes'
+                                    maybe'
+                                    no'
     where yesMaybeNo' = td yesMaybeNo
+          yes' = td yesLbl
+          maybe' = td $ maybeLbl 66
+          no' = td noLbl
+
+yesLbl :: Html
+yesLbl = h1 ! A.style "margin: 0px"
+            $ label ! class_ "label label-success label-lg pull-right"
+                    ! A.style "width: 171.4218px;"
+                    $ faIcon "check"
+
+maybeLbl :: Int -> Html
+maybeLbl n = h1 ! A.style "margin: 0px"
+             $ label ! class_ "label label-warning label-lg pull-right"
+                     ! A.style "width: 171.4218px;"
+                     $ do string $ show n
+                          string " %"
+
+noLbl :: Html
+noLbl = h1 ! A.style "margin: 0px"
+           $ label ! class_ "label label-danger label-lg pull-right"
+                   ! A.style "width: 171.4218px;"
+                   $ faIcon "times"
 
 yesMaybeNo :: Html
 yesMaybeNo = div ! class_ "btn-group input-group form-group pull-right"
@@ -257,8 +278,7 @@ yesMaybeNo = div ! class_ "btn-group input-group form-group pull-right"
                             ! class_ "form-control input-lg"
                             ! placeholder "0-100"
                             ! A.style "padding: 0 0 0 5px; width: 60px; display: none;"
--- 57.1406*3=171.4218
--- 72
+
                       label ! class_ "btn btn-warning btn-lg"
                             ! id "label-maybe"
                             $ do input ! type_ "radio"
@@ -287,8 +307,9 @@ test = div ! class_ "form-group"
                                    text "-14"
                                    sup "00"
            div ! class_"input-group" $ do
-               a ! class_ "input-group-addon"
-                 $ faIcon "globe" ! href "https://www.google.at/maps/place/T-Mobile/@48.1867866,16.4030867,17z/data=!3m1!4b1!4m2!3m1!1s0x476d0758bd8a5b27:0xc82262fbd030dbd0"
+               a ! class_ "input-group-addon btn btn-default"
+                 ! href "https://www.google.at/maps/place/T-Mobile/@48.1867866,16.4030867,17z/data=!3m1!4b1!4m2!3m1!1s0x476d0758bd8a5b27:0xc82262fbd030dbd0"
+                 $ faIcon "globe"
                ul ! class_ "list-group"
                   ! A.style "margin-bottom: 0px;"
                   $ do li ! class_ "list-group-item"
@@ -303,7 +324,7 @@ test = div ! class_ "form-group"
                           div "Austria"
            div ! class_"input-group" $ do
                span ! class_ "input-group-addon"
-                    $ faIcon "clock-o" ! href "https://www.google.at/maps/place/T-Mobile/@48.1867866,16.4030867,17z/data=!3m1!4b1!4m2!3m1!1s0x476d0758bd8a5b27:0xc82262fbd030dbd0"
+                    $ faIcon "clock-o"
                ul ! class_ "list-group"
                   ! A.style "margin-bottom: 0px;"
                   $ do li ! class_ "list-group-item"
