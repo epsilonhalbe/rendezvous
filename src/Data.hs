@@ -228,18 +228,18 @@ modalContent = div ! class_ "scrollable-table table-responsive"
                    $ table ! class_ "table table-striped" $
                        do thead $ tr
                               $ do th ""
-                                   th ! A.style "padding: 0 0 0 0;"
+                                   th ! A.style "min-width: 206px; padding: 0 0 0 0;"
                                       $ test
-                                   th ! A.style "padding: 0 0 0 0;"
+                                   th ! A.style "min-width: 206px; padding: 0 0 0 0;"
                                       $ test
-                                   th ! A.style "padding: 0 0 0 0;"
+                                   th ! A.style "min-width: 206px; padding: 0 0 0 0;"
                                       $ test
                           tbody $ do
                                 tr $ do
                                     th ! A.style "vertical-align: middle;" $ "Martin Heuschober"
                                     mconcat $ replicate 3 yesMaybeNo'
                                 tr $ do
-                                    th "Hartin Meuschober"
+                                    th ! A.style "vertical-align: middle;" $ "Hartin Meuschober"
                                     yesMaybeNo'
                                     yesMaybeNo'
                                     yesMaybeNo'
@@ -249,17 +249,19 @@ yesMaybeNo :: Html
 yesMaybeNo = div ! class_ "btn-group input-group form-group pull-right"
                  ! A.style "margin-top: 10px;"
                  ! dataToggle "buttons"
-                 $ do label ! class_ "btn btn-success"
+                 $ do label ! class_ "btn btn-success btn-lg"
                             $ do input ! type_ "radio"
                                        ! name "options"
                                        ! id "opt-ok"
                                        ! autocomplete "off"
                                  faIcon "check"
                       input ! id "input-maybe"
-                            ! class_ "form-control"
+                            ! class_ "form-control input-lg"
                             ! placeholder "0-100"
-                            ! A.style "padding: 0 0 0 5px; width: 48px; display: none;"
-                      label ! class_ "btn btn-warning"
+                            ! A.style "padding: 0 0 0 5px; width: 60px; display: none;"
+-- 57.1406*3=171.4218
+-- 72
+                      label ! class_ "btn btn-warning btn-lg"
                             ! id "label-maybe"
                             $ do input ! type_ "radio"
                                        ! name "options"
@@ -267,7 +269,7 @@ yesMaybeNo = div ! class_ "btn-group input-group form-group pull-right"
                                        ! id "opt-maybe"
                                        ! autocomplete "off"
                                  faIcon "question"
-                      label ! class_ "btn btn-danger"
+                      label ! class_ "btn btn-danger btn-lg"
                             $ do input ! type_ "radio"
                                        ! name "options"
                                        ! id "opt-nok"
