@@ -11,13 +11,14 @@ module Site
 ------------------------------------------------------------------------------
 import           Data.ByteString (ByteString)
 
-import           Snap
-import           Snap.Snaplet.Auth
-import           Snap.Snaplet.Auth.Backends.SqliteSimple
+import           Snap ( Handler, SnapletInit
+                      , addRoutes, makeSnaplet, nestSnaplet, with)
+import           Snap.Snaplet.Auth (addAuthSplices)
+import           Snap.Snaplet.Auth.Backends.SqliteSimple (initSqliteAuth)
 import           Snap.Snaplet.Heist (heistInit)
-import           Snap.Snaplet.Session.Backends.CookieSession
-import           Snap.Snaplet.SqliteSimple
-import           Snap.Util.FileServe
+import           Snap.Snaplet.Session.Backends.CookieSession (initCookieSessionManager)
+import           Snap.Snaplet.SqliteSimple (sqliteInit)
+import           Snap.Util.FileServe (serveDirectory)
 
 ------------------------------------------------------------------------------
 import           Application
